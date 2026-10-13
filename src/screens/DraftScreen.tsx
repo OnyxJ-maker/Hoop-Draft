@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { useGame } from '@/store/game'
 import { useSettings } from '@/store/settings'
 import { useShotClock } from './draft/helpers'
+import { CapBanner, DecadeBanner, SlotStrip } from './draft/Banners'
 import { OnTheClock } from './draft/OnTheClock'
 import { OpenBoard } from './draft/OpenBoard'
 import { OrderRail } from './draft/OrderRail'
@@ -173,7 +174,15 @@ function DraftRoom({ draft }: { draft: DraftState }) {
         onConfirm={doDraft}
         showPrice={format === 'cap'}
         canAct={humanTurn}
-        decadeLock={format === 'time-machine' && !offer.fallbackAnyEra && cur ? draft.rounds[cur.round].decade : undefined}
+        banner={
+          format === 'time-machine' && !offer.fallbackAnyEra && cur ? (
+            <DecadeBanner decade={draft.rounds[cur.round].decade as number} count={offer.items.length} />
+          ) : format === 'cap' ? (
+            <CapBanner draft={draft} team={onClockTeam} />
+          ) : format === 'starting-five' ? (
+            <SlotStrip draft={draft} team={onClockTeam} selectedId={selectedId} />
+          ) : undefined
+        }
       />
     )
   })()
@@ -199,7 +208,7 @@ function DraftRoom({ draft }: { draft: DraftState }) {
         </aside>
         <section className={cn('flex min-h-0 flex-col', mobileTab === 'board' ? 'flex' : 'hidden', 'lg:flex')}>
           {draft.settings.finale === 'season82' && hasHuman && (
-            <PerfectMeter roster={focusRoster} seed={finaleSeed} />
+            <PerfectMeter roster={focusRoster} seed={finaleSeed} size={draft.settings.rounds} />
           )}
           <div className="min-h-0 flex-1">{board}</div>
         </section>

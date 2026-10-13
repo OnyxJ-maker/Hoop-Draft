@@ -1,13 +1,13 @@
 import { useMemo } from 'react'
 import { Flame } from 'lucide-react'
-import { marginOf, profileOf } from '@/engine/rating'
+import { marginOf, profileOf, projectRoster } from '@/engine/rating'
 import { expectedWins, formatOdds, makeLeague82, perfectOdds, schedule82 } from '@/engine/season82'
 import type { Player } from '@/engine/types'
 
-export function PerfectMeter({ roster, seed }: { roster: Player[]; seed: number }) {
+export function PerfectMeter({ roster, seed, size }: { roster: Player[]; seed: number; size: number }) {
   const league = useMemo(() => makeLeague82(seed), [seed])
   const sched = useMemo(() => schedule82(league, seed), [league, seed])
-  const power = useMemo(() => profileOf(roster).power, [roster])
+  const power = useMemo(() => profileOf(projectRoster(roster, size)).power, [roster, size])
   const margin = marginOf(power)
   const odds = perfectOdds(margin, league, sched)
   const wins = expectedWins(margin, league, sched)
@@ -24,7 +24,9 @@ export function PerfectMeter({ roster, seed }: { roster: Player[]; seed: number 
           </div>
         </div>
         <div>
-          <div className="font-cond text-[12px] font-bold uppercase tracking-[0.25em] text-muted-foreground">Projected record</div>
+          <div className="font-cond text-[12px] font-bold uppercase tracking-[0.25em] text-muted-foreground" title="Assumes the rest of your picks are average">
+            Projected record
+          </div>
           <div className="font-display text-3xl leading-none text-white">
             {Math.round(wins)}–{82 - Math.round(wins)}
           </div>

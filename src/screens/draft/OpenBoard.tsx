@@ -1,11 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { ArrowDown, ArrowUp, LayoutGrid, List, Search, X } from 'lucide-react'
 import { OvrBadge } from '@/components/bits'
 import { PlayerCard } from '@/components/PlayerCard'
 import { Input } from '@/components/ui/input'
 import { getPlayer } from '@/data/players'
 import type { OfferItem } from '@/engine/draft'
-import { decadeLabel } from '@/engine/pool'
 import { POSITIONS, heightLabel, type Player, type Pos } from '@/engine/types'
 import { cn } from '@/lib/utils'
 
@@ -53,10 +52,10 @@ interface Props {
   onConfirm: (id: string) => void
   showPrice?: boolean
   canAct: boolean
-  decadeLock?: number
+  banner?: ReactNode
 }
 
-export function OpenBoard({ items, selectedId, onSelect, onConfirm, showPrice, canAct, decadeLock }: Props) {
+export function OpenBoard({ items, selectedId, onSelect, onConfirm, showPrice, canAct, banner }: Props) {
   const [query, setQuery] = useState('')
   const [pos, setPos] = useState<Pos | null>(null)
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: 'ovr', dir: -1 })
@@ -161,11 +160,7 @@ export function OpenBoard({ items, selectedId, onSelect, onConfirm, showPrice, c
         </div>
       </div>
 
-      {decadeLock !== undefined && (
-        <div className="mb-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-1.5 font-cond text-[14px] font-bold uppercase tracking-wider text-amber-200">
-          Locked to the {decadeLabel(decadeLock)} · {items.length} players eligible
-        </div>
-      )}
+      {banner}
 
       <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border border-white/10 bg-black/20 scrollbar-thin">
         {rows.length === 0 ? (

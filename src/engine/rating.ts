@@ -28,6 +28,25 @@ export const REPLACEMENT: Player = {
   def: 50,
 }
 
+/** An "average pick" used to project incomplete rosters. */
+export const FILLER: Player = {
+  ...REPLACEMENT,
+  id: 'filler',
+  name: 'Average Pick',
+  ovr: 82,
+  ht: 79,
+  attrs: { fin: 70, sht: 70, hnd: 66, pas: 64, reb: 66, prd: 68, ind: 50, ath: 72, iq: 72 },
+  off: 68,
+  def: 66,
+  price: 10,
+}
+
+export function projectRoster(roster: readonly Player[], size: number): Player[] {
+  const out = [...roster]
+  while (out.length < size) out.push(FILLER)
+  return out
+}
+
 export interface Note {
   label: string
   detail: string
@@ -119,7 +138,9 @@ export function profileOf(roster: readonly Player[], opts: { fillTo?: number } =
   if (duo >= 96) add('Superstar duo', 'Two top-tier megastars.', 0.8)
   if (t1 >= 98) add('Generational talent', 'One player bends the whole game.', 0.8)
 
-  const chemistry = clamp(sum(notes.map((n) => n.delta)), -12, 5)
+  const realStarters = Math.min(5, roster.length)
+  const completeness = realStarters >= 5 ? 1 : Math.pow(realStarters / 5, 1.5)
+  const chemistry = clamp(sum(notes.map((n) => n.delta)) * completeness, -12, 5)
 
   const power =
     talent +
