@@ -1,0 +1,132 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@fontsource/anton/400.css';
+@import '@fontsource/barlow-condensed/500.css';
+@import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow-condensed/700.css';
+@import '@fontsource/barlow-condensed/800.css';
+@import '@fontsource-variable/inter';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.9rem;
+  --background: oklch(0.15 0.035 285);
+  --foreground: oklch(0.97 0.012 90);
+  --card: oklch(0.2 0.045 285);
+  --card-foreground: oklch(0.97 0.012 90);
+  --popover: oklch(0.19 0.045 285);
+  --popover-foreground: oklch(0.97 0.012 90);
+  --primary: oklch(0.75 0.19 52);
+  --primary-foreground: oklch(0.17 0.03 285);
+  --secondary: oklch(0.27 0.055 285);
+  --secondary-foreground: oklch(0.97 0.012 90);
+  --muted: oklch(0.25 0.045 285);
+  --muted-foreground: oklch(0.74 0.035 285);
+  --accent: oklch(0.82 0.13 205);
+  --accent-foreground: oklch(0.17 0.03 285);
+  --destructive: oklch(0.64 0.23 25);
+  --border: oklch(1 0 0 / 13%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.75 0.19 52);
+  --chart-1: oklch(0.75 0.19 52);
+  --chart-2: oklch(0.82 0.13 205);
+  --chart-3: oklch(0.72 0.22 350);
+  --chart-4: oklch(0.86 0.19 130);
+  --chart-5: oklch(0.85 0.16 90);
+  --neon-orange: #ff7a1a;
+  --neon-cyan: #22d3ee;
+  --neon-pink: #f43f9d;
+  --neon-lime: #a3e635;
+  --neon-gold: #fbbf24;
+  --neon-violet: #8b5cf6;
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Anton', 'Impact', 'Haettenschweiler', sans-serif;
+  --font-cond: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-neon-orange: var(--neon-orange);
+  --color-neon-cyan: var(--neon-cyan);
+  --color-neon-pink: var(--neon-pink);
+  --color-neon-lime: var(--neon-lime);
+  --color-neon-gold: var(--neon-gold);
+  --color-neon-violet: var(--neon-violet);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(1100px 700px at 12% -12%, oklch(0.36 0.15 300 / 0.55), transparent 62%),
+      radial-gradient(900px 600px at 105% 8%, oklch(0.5 0.17 45 / 0.32), transparent 62%),
+      radial-gradient(900px 650px at 50% 125%, oklch(0.4 0.13 230 / 0.42), transparent 62%);
+    background-attachment: fixed;
+  }
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+  .font-cond {
+    font-family: var(--font-cond);
+  }
+  .text-stroke {
+    -webkit-text-stroke: 2px currentColor;
+    paint-order: stroke fill;
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(1 0 0 / 0.25) transparent;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
