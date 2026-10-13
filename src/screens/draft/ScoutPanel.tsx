@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Check, Lock, Search } from 'lucide-react'
+import { Check, Lock, Search, Wand2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { AttrBars, TeamAvatar } from '@/components/bits'
 import { PlayerCard } from '@/components/PlayerCard'
@@ -23,13 +23,14 @@ interface Props {
   waitingFor?: string
   offerItem?: OfferItem
   onDraft: (id: string) => void
+  onAutoPick?: () => void
   viewTeam: number
   setViewTeam: (t: number) => void
   tab: RightTab
   setTab: (t: RightTab) => void
 }
 
-export function ScoutPanel({ draft, selectedId, onClockTeam, canAct, waitingFor, offerItem, onDraft, viewTeam, setViewTeam, tab, setTab }: Props) {
+export function ScoutPanel({ draft, selectedId, onClockTeam, canAct, waitingFor, offerItem, onDraft, onAutoPick, viewTeam, setViewTeam, tab, setTab }: Props) {
   const player = selectedId ? getPlayer(selectedId) : null
   const roster = useMemo(() => rosterOf(draft, onClockTeam), [draft, onClockTeam])
   const bk = draft.settings.format === 'ball-knowledge'
@@ -170,6 +171,15 @@ export function ScoutPanel({ draft, selectedId, onClockTeam, canAct, waitingFor,
             )}
           </Button>
           {player && canAct && offerItem && !offerItem.ok && <p className="mt-1.5 text-center text-sm text-amber-300">{offerItem.reason}</p>}
+          {canAct && onAutoPick && (
+            <button
+              type="button"
+              onClick={onAutoPick}
+              className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg py-1.5 font-cond text-[13px] font-bold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-white/10 hover:text-white"
+            >
+              <Wand2 className="size-3.5" /> Let the GM auto-pick
+            </button>
+          )}
         </div>
       )}
     </div>

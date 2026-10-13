@@ -27,6 +27,13 @@ const DISPLAY_NAMES: Record<string, string> = {
   'Vlade Divac': 'Vlade Divac',
 }
 
+export function normalizeText(s: string): string {
+  return s
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+}
+
 export function slugify(name: string): string {
   return name
     .normalize('NFD')

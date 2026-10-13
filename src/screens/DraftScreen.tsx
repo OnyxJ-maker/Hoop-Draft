@@ -139,6 +139,7 @@ function DraftRoom({ draft }: { draft: DraftState }) {
       waitingFor={cur && !humanTurn ? `${onClock.owner} is picking…` : draft.phase !== 'pick' ? 'Round starting…' : undefined}
       offerItem={offerItem}
       onDraft={doDraft}
+      onAutoPick={clockPick}
       viewTeam={viewTeam}
       setViewTeam={(t) => {
         setViewTeam(t)

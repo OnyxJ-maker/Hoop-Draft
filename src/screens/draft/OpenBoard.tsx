@@ -3,7 +3,7 @@ import { ArrowDown, ArrowUp, LayoutGrid, List, Search, X } from 'lucide-react'
 import { OvrBadge } from '@/components/bits'
 import { PlayerCard } from '@/components/PlayerCard'
 import { Input } from '@/components/ui/input'
-import { getPlayer } from '@/data/players'
+import { getPlayer, normalizeText } from '@/data/players'
 import type { OfferItem } from '@/engine/draft'
 import { POSITIONS, heightLabel, type Player, type Pos } from '@/engine/types'
 import { cn } from '@/lib/utils'
@@ -62,12 +62,12 @@ export function OpenBoard({ items, selectedId, onSelect, onConfirm, showPrice, c
   const [view, setView] = useState<'table' | 'cards'>('table')
 
   const rows = useMemo(() => {
-    const q = query.trim().toLowerCase()
+    const q = normalizeText(query.trim())
     const list = items
       .map((it) => ({ it, p: getPlayer(it.id) }))
       .filter(({ p }) => {
         if (pos && !p.pos.includes(pos)) return false
-        if (q && !(p.name.toLowerCase().includes(q) || p.nick.toLowerCase().includes(q))) return false
+        if (q && !(normalizeText(p.name).includes(q) || normalizeText(p.nick).includes(q))) return false
         return true
       })
     list.sort((a, b) => {

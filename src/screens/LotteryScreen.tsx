@@ -22,22 +22,28 @@ export function LotteryScreen() {
   useEffect(() => {
     if (!draft || done) return
     const spinTimer = setInterval(() => setSpin((s) => s + 1), 70)
-    const timer = setTimeout(() => {
-      setRevealed((r) => r + 1)
-      sfx.flip()
-    }, 750)
+    const timer = setTimeout(
+      () => {
+        setRevealed((r) => r + 1)
+        sfx.flip()
+      },
+      T > 10 ? 480 : 750,
+    )
     return () => {
       clearInterval(spinTimer)
       clearTimeout(timer)
     }
-  }, [draft, done, revealed])
+  }, [draft, done, revealed, T])
 
   useEffect(() => {
     if (done && T > 0) {
       sfx.fanfare()
       burst(undefined, 70, { x: 0.5, y: 0.35 })
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else if (T > 0) {
+      document.getElementById(`slot-${T - revealed - 1}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' })
     }
-  }, [done, T])
+  }, [done, T, revealed])
 
   if (!draft) return null
   const f = FORMATS[draft.settings.format]
@@ -72,6 +78,7 @@ export function LotteryScreen() {
             return (
               <motion.li
                 key={i}
+                id={`slot-${i}`}
                 layout
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
