@@ -73,7 +73,7 @@ export interface PickValue {
 }
 
 /** Positive delta means the player went later than his OVR rank suggests (a steal). */
-export function pickValue(s: DraftState, pick: DraftPick): PickValue {
+export function pickValue(_s: DraftState, pick: DraftPick): PickValue {
   const rank = OVR_RANK.get(pick.playerId) ?? 100
   const delta = pick.overall + 1 - rank
   const tag = delta >= 18 ? 'steal' : delta <= -22 ? 'reach' : 'fair'

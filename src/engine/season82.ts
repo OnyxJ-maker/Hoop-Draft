@@ -74,6 +74,12 @@ export function perfectOdds(margin: number, league: readonly Opp[], sched: reado
   return p
 }
 
+export function expectedWins(margin: number, league: readonly Opp[], sched: readonly ScheduledGame[]): number {
+  let w = 0
+  for (const g of sched) w += winProb(margin, league[g.opp].margin, g.home ? 1 : -1)
+  return w
+}
+
 export function simSeason82(
   roster: readonly Player[],
   power: number,
