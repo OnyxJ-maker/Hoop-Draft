@@ -67,7 +67,7 @@ export function Season82Screen() {
 
   useEffect(() => {
     if (!running || done || lanes.length === 0) return
-    let delay = speed === 1 ? 120 : speed === 4 ? 34 : 6
+    let delay = speed === 1 ? (g < 3 ? 420 : 190) : speed === 4 ? 48 : 7
     if (speed === 1 && anyHumanPerfect && g >= 36) delay = g >= 78 ? 1100 : g >= 70 ? 620 : g >= 58 ? 360 : 220
     const t = setTimeout(() => {
       const next = g + 1

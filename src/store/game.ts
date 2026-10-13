@@ -61,6 +61,8 @@ export interface SetupState {
 
 export const MAX_TEAMS = 16
 
+const GAME_SCREENS: Screen[] = ['lottery', 'draft', 'recap', 'finale']
+
 const uid = () => Math.random().toString(36).slice(2, 9)
 
 function randomTeamIdentity(used: string[] = []): { name: string; icon: string } {
@@ -150,8 +152,8 @@ export const useGame = create<GameStore>()(
       resumeScreen: null,
 
       goto: (screen) => {
-        const draft = get().draft
-        set({ screen, resumeScreen: screen !== 'menu' && draft ? screen : get().resumeScreen })
+        const { draft, resumeScreen } = get()
+        set({ screen, resumeScreen: draft && GAME_SCREENS.includes(screen) ? screen : resumeScreen })
       },
 
       pickMode: (mode) => {
@@ -322,7 +324,8 @@ export const useGame = create<GameStore>()(
 
       resume: () => {
         const { resumeScreen, draft } = get()
-        if (draft && resumeScreen) set({ screen: resumeScreen })
+        if (!draft) return
+        set({ screen: resumeScreen && GAME_SCREENS.includes(resumeScreen) ? resumeScreen : 'draft' })
       },
 
       endGame: () => set({ draft: null, resumeScreen: null, screen: 'menu' }),

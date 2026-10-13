@@ -28,16 +28,16 @@ export const REPLACEMENT: Player = {
   def: 50,
 }
 
-/** An "average pick" used to project incomplete rosters. */
+/** A solid, chemistry-neutral role player used to project incomplete rosters. */
 export const FILLER: Player = {
   ...REPLACEMENT,
   id: 'filler',
   name: 'Average Pick',
   ovr: 82,
   ht: 79,
-  attrs: { fin: 70, sht: 70, hnd: 66, pas: 64, reb: 66, prd: 68, ind: 50, ath: 72, iq: 72 },
-  off: 68,
-  def: 66,
+  attrs: { fin: 72, sht: 77, hnd: 80, pas: 74, reb: 70, prd: 74, ind: 78, ath: 74, iq: 74 },
+  off: 76,
+  def: 77,
   price: 10,
 }
 

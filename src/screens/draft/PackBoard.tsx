@@ -59,6 +59,7 @@ export function PackBoard({ items, packKey, selectedId, onSelect, onConfirm, can
           <Button
             variant="outline"
             disabled={mulligansLeft <= 0 || !allFlipped}
+            title="Throw this pack back and open a new one"
             onClick={() => {
               sfx.click()
               onMulligan()
