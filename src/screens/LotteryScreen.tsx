@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { FastForward, Play } from 'lucide-react'
 import { AppBar } from '@/components/AppBar'
@@ -18,8 +18,6 @@ export function LotteryScreen() {
   const [spin, setSpin] = useState(0)
   const T = draft?.teams.length ?? 0
   const done = revealed >= T
-  const revealedRef = useRef(0)
-  revealedRef.current = revealed
 
   useEffect(() => {
     if (!draft || done) return

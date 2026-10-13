@@ -4,8 +4,10 @@ import { marginOf, profileOf, projectRoster } from '@/engine/rating'
 import { expectedWins, formatOdds, makeLeague82, perfectOdds, schedule82 } from '@/engine/season82'
 import type { Player } from '@/engine/types'
 
-export function PerfectMeter({ roster, seed, size }: { roster: Player[]; seed: number; size: number }) {
-  const league = useMemo(() => makeLeague82(seed), [seed])
+export function PerfectMeter({ roster, seed, size, teamNames }: { roster: Player[]; seed: number; size: number; teamNames: string[] }) {
+  const namesKey = teamNames.join('|')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const league = useMemo(() => makeLeague82(seed, teamNames), [seed, namesKey])
   const sched = useMemo(() => schedule82(league, seed), [league, seed])
   const power = useMemo(() => profileOf(projectRoster(roster, size)).power, [roster, size])
   const margin = marginOf(power)

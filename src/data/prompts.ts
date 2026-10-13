@@ -19,6 +19,7 @@ const scale = (v: number, lo: number, hi: number) => clamp100(((v - lo) / (hi - 
 
 const scoring = (p: Player) =>
   Math.max(p.attrs.fin, p.attrs.sht) * 0.6 + Math.min(p.attrs.fin, p.attrs.sht) * 0.1 + p.attrs.hnd * 0.15 + p.attrs.ath * 0.15
+const isBig = (p: Player) => p.pos.includes('C') || p.ht >= 83
 const defense = (p: Player) => Math.max(p.attrs.prd, p.attrs.ind) * 0.6 + p.attrs.ath * 0.2 + p.attrs.iq * 0.2
 
 export const PROMPTS: Prompt[] = [
@@ -253,7 +254,7 @@ export const PROMPTS: Prompt[] = [
     tagline: 'A center with a point guard brain (and the vision to match).',
     icon: 'Brain',
     kind: 'stats',
-    fit: (p) => (p.ht >= 81 ? scale(p.attrs.pas, 50, 99) : scale(p.attrs.pas, 85, 99) * 0.25),
+    fit: (p) => (isBig(p) ? scale(p.attrs.pas, 50, 99) : 0),
   },
   {
     id: 'bigshoot',
@@ -261,7 +262,7 @@ export const PROMPTS: Prompt[] = [
     tagline: 'Pulls the center out to the three-point line and keeps going.',
     icon: 'Target',
     kind: 'stats',
-    fit: (p) => (p.ht >= 81 ? scale(p.attrs.sht, 50, 99) : scale(p.attrs.sht, 90, 99) * 0.2),
+    fit: (p) => (isBig(p) ? scale(p.attrs.sht, 50, 99) : 0),
   },
   {
     id: 'mvps',

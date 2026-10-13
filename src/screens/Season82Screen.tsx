@@ -31,7 +31,8 @@ export function Season82Screen() {
   const goto = useGame((s) => s.goto)
   const addHof = useSettings((s) => s.addHof)
 
-  const league = useMemo(() => makeLeague82(seed), [seed])
+  const teamNames = useMemo(() => (draft ? draft.teams.map((t) => t.name) : []), [draft])
+  const league = useMemo(() => makeLeague82(seed, teamNames), [seed, teamNames])
   const sched = useMemo(() => schedule82(league, seed), [league, seed])
   const lanes: Lane[] = useMemo(() => {
     if (!draft) return []

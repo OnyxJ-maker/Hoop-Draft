@@ -14,9 +14,9 @@ export interface Opp {
   margin: number
 }
 
-export function makeLeague82(seed: number, excludeIds: string[] = [], size = 29): Opp[] {
+export function makeLeague82(seed: number, excludeNames: string[] = [], size = 29): Opp[] {
   const rng = rngFor('league82', seed)
-  const pool = FRANCHISES.filter((f) => !excludeIds.includes(f.id))
+  const pool = FRANCHISES.filter((f) => !excludeNames.includes(franchiseName(f)))
   return shuffle(rng, pool)
     .slice(0, size)
     .map((f) => {

@@ -7,6 +7,7 @@ import { getPlayer } from '@/data/players'
 import type { OfferItem } from '@/engine/draft'
 import { sfx } from '@/audio/sfx'
 import { burst, RAINBOW } from '@/lib/confetti'
+import { useMediaQuery } from '@/lib/hooks'
 
 interface Props {
   items: OfferItem[]
@@ -43,7 +44,8 @@ export function PackBoard({ items, packKey, selectedId, onSelect, onConfirm, can
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [packKey, canAct])
 
-  const size = items.length >= 6 ? 'sm' : items.length >= 5 ? 'md' : 'lg'
+  const isSmall = useMediaQuery('(max-width: 639px)')
+  const size = isSmall ? 'sm' : items.length >= 6 ? 'sm' : items.length >= 5 ? 'md' : 'lg'
   const allFlipped = flipped.every(Boolean)
 
   return (
@@ -68,7 +70,7 @@ export function PackBoard({ items, packKey, selectedId, onSelect, onConfirm, can
           </Button>
         )}
       </div>
-      <div className="flex min-h-0 flex-1 flex-wrap content-start items-start justify-center gap-5 overflow-y-auto p-2 pt-4 scrollbar-thin">
+      <div className="flex min-h-0 flex-1 flex-wrap content-start items-start justify-center gap-3 overflow-y-auto p-2 pt-4 scrollbar-thin sm:gap-5">
         {items.map((it, i) => (
           <motion.div key={`${packKey}-${it.id}`} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
             <PlayerCard

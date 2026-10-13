@@ -26,6 +26,7 @@ export function SeasonStage({
   const [running, setRunning] = useState(false)
   const [speed, setSpeed] = useState<1 | 4 | 16>(1)
   const done = week >= weeks.length
+  const active = running && !done
 
   useEffect(() => {
     const t = setTimeout(() => setRunning(true), 900)
@@ -33,20 +34,17 @@ export function SeasonStage({
   }, [])
 
   useEffect(() => {
-    if (!running || done) return
+    if (!active) return
     const delay = speed === 1 ? 800 : speed === 4 ? 240 : 40
     const t = setTimeout(() => {
       setWeek((w) => w + 1)
       if (speed === 1) sfx.tick()
     }, delay)
     return () => clearTimeout(t)
-  }, [running, done, week, speed])
+  }, [active, week, speed])
 
   useEffect(() => {
-    if (done) {
-      setRunning(false)
-      sfx.whistle()
-    }
+    if (done) sfx.whistle()
   }, [done])
 
   const played = useMemo(() => weeks.slice(0, week).flat(), [weeks, week])
@@ -207,8 +205,8 @@ export function SeasonStage({
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-2">
             <Button size="lg" variant="outline" className="h-11 gap-2 border-white/20 bg-transparent" disabled={done} onClick={() => setRunning((r) => !r)}>
-              {running ? <Pause className="size-5" /> : <Play className="size-5" />}
-              {running ? 'Pause' : 'Play'}
+              {active ? <Pause className="size-5" /> : <Play className="size-5" />}
+              {active ? 'Pause' : 'Play'}
             </Button>
             <Segmented
               size="sm"

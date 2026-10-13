@@ -13,6 +13,7 @@ import { useGame } from '@/store/game'
 import { useSettings } from '@/store/settings'
 import { useShotClock } from './draft/helpers'
 import { CapBanner, DecadeBanner, SlotStrip } from './draft/Banners'
+import { BoardDialog } from './draft/BoardDialog'
 import { OnTheClock } from './draft/OnTheClock'
 import { OpenBoard } from './draft/OpenBoard'
 import { OrderRail } from './draft/OrderRail'
@@ -22,6 +23,7 @@ import { PickAnnouncement } from './draft/PickAnnouncement'
 import { PoolBoard } from './draft/PoolBoard'
 import { RoundIntro } from './draft/RoundIntro'
 import { RoundReveal } from './draft/RoundReveal'
+import { TurnSplash } from './draft/TurnSplash'
 import { ScoutPanel, type RightTab } from './draft/ScoutPanel'
 
 export function DraftScreen() {
@@ -198,7 +200,12 @@ function DraftRoom({ draft }: { draft: DraftState }) {
             </span>
           </span>
         }
-        right={<FastToggle />}
+        right={
+          <>
+            <BoardDialog draft={draft} />
+            <FastToggle />
+          </>
+        }
       />
       <OnTheClock draft={draft} clockLeft={left} onSkipAhead={simAhead} skipLabel="Skip to a human pick" />
 
@@ -208,7 +215,7 @@ function DraftRoom({ draft }: { draft: DraftState }) {
         </aside>
         <section className={cn('flex min-h-0 flex-col', mobileTab === 'board' ? 'flex' : 'hidden', 'lg:flex')}>
           {draft.settings.finale === 'season82' && hasHuman && (
-            <PerfectMeter roster={focusRoster} seed={finaleSeed} size={draft.settings.rounds} />
+            <PerfectMeter roster={focusRoster} seed={finaleSeed} size={draft.settings.rounds} teamNames={draft.teams.map((t) => t.name)} />
           )}
           <div className="min-h-0 flex-1">{board}</div>
         </section>
@@ -256,6 +263,7 @@ function DraftRoom({ draft }: { draft: DraftState }) {
       </nav>
 
       <PickAnnouncement draft={draft} quick={fast} />
+      <TurnSplash draft={draft} quick={fast} />
 
       <AnimatePresence>{draft.phase === 'intro' && <RoundIntro key={`intro-${cur?.round}`} draft={draft} onGo={startRound} />}</AnimatePresence>
       <AnimatePresence>{draft.phase === 'reveal' && <RoundReveal key={`reveal-${draft.picks.length}`} draft={draft} onNext={ackReveal} />}</AnimatePresence>

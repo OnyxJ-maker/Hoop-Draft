@@ -12,7 +12,7 @@ import type { LTeam, PlayoffResult, RegularSeason } from '@/engine/league'
 import { sfx } from '@/audio/sfx'
 import { cannons, rain, RAINBOW } from '@/lib/confetti'
 import { cn } from '@/lib/utils'
-import { roundName } from './PlayoffsStage'
+import { roundName } from './util'
 import { useGame } from '@/store/game'
 import { useSettings } from '@/store/settings'
 

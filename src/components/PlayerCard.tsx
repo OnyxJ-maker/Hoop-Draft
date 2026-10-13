@@ -6,15 +6,12 @@ import { heightLabel, type Player } from '@/engine/types'
 import { BasketballIcon } from './BasketballIcon'
 import { Icon } from './Icon'
 
-export const CARD_W = 180
-export const CARD_H = 262
+const CARD_W = 180
+const CARD_H = 262
 
 export type CardSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 const SCALE: Record<CardSize, number> = { xs: 0.52, sm: 0.72, md: 0.92, lg: 1.15, xl: 1.45 }
 
-export function cardPixelSize(size: CardSize) {
-  return { w: CARD_W * SCALE[size], h: CARD_H * SCALE[size] }
-}
 
 function statTone(v: number) {
   if (v >= 92) return 'text-lime-300'

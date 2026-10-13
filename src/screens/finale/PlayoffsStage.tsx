@@ -8,14 +8,7 @@ import type { LTeam, PlayoffResult, Series } from '@/engine/league'
 import { statLine, topPerformer } from '@/engine/stats'
 import { sfx } from '@/audio/sfx'
 import { cn } from '@/lib/utils'
-
-export function roundName(round: number, rounds: number): string {
-  const fromEnd = rounds - 1 - round
-  if (fromEnd === 0) return 'The Finals'
-  if (fromEnd === 1) return 'Semifinals'
-  if (fromEnd === 2) return 'Quarterfinals'
-  return `Round ${round + 1}`
-}
+import { roundName } from './util'
 
 interface Step {
   round: number
@@ -43,6 +36,7 @@ export function PlayoffsStage({ teams, playoffs, onDone }: { teams: LTeam[]; pla
   const [running, setRunning] = useState(false)
   const [speed, setSpeed] = useState<1 | 4 | 16>(1)
   const done = pointer >= steps.length
+  const active = running && !done
 
   useEffect(() => {
     const t = setTimeout(() => setRunning(true), 900)
@@ -53,7 +47,7 @@ export function PlayoffsStage({ teams, playoffs, onDone }: { teams: LTeam[]; pla
   const isFinals = nextStep ? nextStep.round === rounds.length - 1 : true
 
   useEffect(() => {
-    if (!running || done) return
+    if (!active) return
     const base = speed === 1 ? (isFinals ? 2300 : 1500) : speed === 4 ? 420 : 55
     const t = setTimeout(() => {
       const st = steps[pointer]
@@ -63,14 +57,13 @@ export function PlayoffsStage({ teams, playoffs, onDone }: { teams: LTeam[]; pla
       const winner = game.hs > game.as ? game.home : game.away
       const wins = series.games.slice(0, st.game + 1).filter((g) => (g.hs > g.as ? g.home : g.away) === winner).length
       const clinched = wins >= Math.floor(series.bestOf / 2) + 1
-      if (speed === 1) clinched ? sfx.whistle() : sfx.swish()
+      if (speed === 1) {
+        if (clinched) sfx.whistle()
+        else sfx.swish()
+      }
     }, base)
     return () => clearTimeout(t)
-  }, [running, done, pointer, speed, steps, rounds, isFinals])
-
-  useEffect(() => {
-    if (done) setRunning(false)
-  }, [done])
+  }, [active, pointer, speed, steps, rounds, isFinals])
 
   const seriesState = (s: Series) => {
     const start = startIndex.get(`${s.round}-${s.slot}`) ?? 0
@@ -222,8 +215,8 @@ export function PlayoffsStage({ teams, playoffs, onDone }: { teams: LTeam[]; pla
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex flex-wrap items-center gap-2">
             <Button size="lg" variant="outline" className="h-11 gap-2 border-white/20 bg-transparent" disabled={done} onClick={() => setRunning((r) => !r)}>
-              {running ? <Pause className="size-5" /> : <Play className="size-5" />}
-              {running ? 'Pause' : 'Play'}
+              {active ? <Pause className="size-5" /> : <Play className="size-5" />}
+              {active ? 'Pause' : 'Play'}
             </Button>
             <Button
               size="lg"

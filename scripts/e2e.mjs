@@ -6,6 +6,7 @@ const mode = process.env.MODE ?? 'draft'
 const format = process.env.FORMAT ?? 'Snake League'
 const tag = process.env.TAG ?? format.replace(/\s+/g, '-').toLowerCase()
 const humans = Number(process.env.HUMANS ?? 1)
+const cpu = process.env.CPU === undefined ? null : Number(process.env.CPU)
 const viewport = process.env.MOBILE ? { width: 390, height: 844 } : { width: 1440, height: 900 }
 
 const browser = await chromium.launch({ executablePath: '/usr/local/bin/google-chrome', args: ['--no-sandbox'] })
@@ -38,6 +39,13 @@ if (mode === '82') {
 }
 await page.waitForTimeout(600)
 for (let i = 1; i < humans; i++) await page.getByRole('button', { name: /Add a player/i }).click()
+if (cpu !== null) {
+  const slider = page.locator('[role="slider"]').first()
+  await slider.focus()
+  await page.keyboard.press('Home')
+  for (let i = 0; i < cpu; i++) await page.keyboard.press('ArrowRight')
+  await page.waitForTimeout(200)
+}
 await page.screenshot({ path: `${out}/${tag}-setup.png` })
 await page.getByRole('button', { name: /Start draft/i }).click()
 await page.waitForTimeout(600)

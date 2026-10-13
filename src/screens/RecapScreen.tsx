@@ -16,6 +16,8 @@ import { sfx } from '@/audio/sfx'
 import { useGame } from '@/store/game'
 import { cn } from '@/lib/utils'
 
+const YEAR = new Date().getFullYear()
+
 function Superlative({
   icon,
   label,
@@ -99,7 +101,7 @@ export function RecapScreen() {
           <div className="font-cond text-[13px] font-bold uppercase tracking-[0.3em]" style={{ color: f.accent }}>
             {f.name} · {draft.teams.length} teams · {draft.picks.length} picks
           </div>
-          <h1 className="font-display text-5xl uppercase leading-none text-white sm:text-6xl">The class of {new Date().getFullYear()}</h1>
+          <h1 className="font-display text-5xl uppercase leading-none text-white sm:text-6xl">The class of {YEAR}</h1>
         </div>
 
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">

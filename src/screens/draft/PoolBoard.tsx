@@ -44,7 +44,7 @@ export function PoolBoard({ draft, selectedId, onSelect, onConfirm, canAct }: Pr
         </div>
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto scrollbar-thin">
-        <div className="flex flex-wrap justify-center gap-4 p-2 pt-4">
+        <div className="flex flex-wrap justify-center gap-2 p-2 pt-4 sm:gap-4">
           {pool.map((id, i) => {
             const p = getPlayer(id)
             const by = takenBy.get(id)

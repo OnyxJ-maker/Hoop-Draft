@@ -176,6 +176,14 @@ describe('league sims', () => {
     expect(formatOdds(result.perfectOdds)).toBeTruthy()
   })
 
+  it('82 game league never contains a drafting team', () => {
+    const names = ['Austin Armadillos', 'Brooklyn Bodegas', 'Denver Altitude']
+    const league = makeLeague82(9, names)
+    expect(league.length).toBe(29)
+    for (const n of names) expect(league.some((o) => o.name === n)).toBe(false)
+    expect(schedule82(league, 9).length).toBe(82)
+  })
+
   it('ball knowledge bonus is bounded', () => {
     expect(bkBonus(100)).toBeLessThanOrEqual(4)
     expect(bkBonus(0)).toBeGreaterThanOrEqual(-4)

@@ -4,7 +4,7 @@ import { TeamAvatar } from '@/components/bits'
 import { currentPick, type DraftState } from '@/engine/draft'
 import { FORMATS } from '@/engine/formats'
 import { cn } from '@/lib/utils'
-import { ClockRing, Dots } from './helpers'
+import { ClockRing, Dots } from './Clock'
 
 export function OnTheClock({
   draft,
@@ -33,11 +33,14 @@ export function OnTheClock({
           <TeamAvatar icon={team.icon} color={team.color} size={52} ring />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 font-cond text-[13px] font-bold uppercase tracking-[0.25em]" style={{ color: team.color }}>
-            <span className="inline-block size-2 animate-pulse rounded-full bg-current" />
+          <div className="flex items-center gap-2 whitespace-nowrap font-cond text-[13px] font-bold uppercase tracking-[0.25em]" style={{ color: team.color }}>
+            <span className="inline-block size-2 shrink-0 animate-pulse rounded-full bg-current" />
             On the clock
-            <span className="text-white/45">
+            <span className="hidden text-white/45 sm:inline">
               · Round {cur.round + 1}/{draft.settings.rounds} · Pick {cur.pickInRound + 1}/{T} · #{cur.overall + 1} overall
+            </span>
+            <span className="text-white/45 sm:hidden">
+              · R{cur.round + 1} · P{cur.pickInRound + 1}
             </span>
           </div>
           <div className="truncate font-display text-[28px] uppercase leading-[1.05] text-white sm:text-4xl">{team.name}</div>
